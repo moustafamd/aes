@@ -7,9 +7,10 @@ module ROM_key
 (
     input wire clk, en,
     input wire [addr_bits-1:0] addr,
-    output reg [data_width-1:0] data
+    output wire [data_width-1:0] dout
 );
 
+(*rom_style = "block" *) reg [data_width-1:0] data; // to be synthesized as BRAM in FPGA
 
 always @(posedge clk)
 begin
@@ -54,5 +55,7 @@ begin
   else
     data = 128'h0;
 end
+
+assign dout = data;
 
 endmodule 
