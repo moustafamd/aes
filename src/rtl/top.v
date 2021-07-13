@@ -5,11 +5,12 @@ module top_aes
   input wire clk, nrst, start,
   input wire [addr_width-1:0] key_addr,
   input wire [aes_len-1:0] plaintext,
+  output wire [aes_len-1:0] result,
   output wire done
 );
 
   wire init, next, ready, result_valid, en_data, en_key;
-  wire [aes_len-1:0] key, result;
+  wire [aes_len-1:0] key;
 
   ctrl aes_ctrl (
     .clk(clk),
@@ -50,12 +51,12 @@ module top_aes
   aes_core aes(
     .clk(clk),
     .reset_n(nrst),
-    .encdec(0),
+    .encdec(0), // 0 to enc
     .init(init),
     .next(next),
     .ready(ready),
     .key({key,128'b0}),
-    .keylen(0),
+    .keylen(0),  // 0 to 128 bits
     .block(plaintext_piped),
     .result(result),
     .result_valid(result_valid)
